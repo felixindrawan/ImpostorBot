@@ -7,6 +7,10 @@ load_dotenv()
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 bot = Bot(command_prefix='$', help_command=None)
 
+@bot.event
+async def on_ready():
+    print('Bot is online!')
+
 @bot.command()
 async def help(ctx):
     art = "```\t\t\t\t\t  ⣠⣴⣶⣿⣿⣷⣶⣄⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n\
