@@ -35,7 +35,7 @@ async def help(ctx):
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    if (before.channel is None and after.channel is not None):
+    if (before.channel != 'Vent' and after.channel is not None):
         vents_channel_id = 879964430710997023
         amongus_channel_id = 757120076519440444
         if after.channel.id == vents_channel_id:
