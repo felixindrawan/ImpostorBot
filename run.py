@@ -11,7 +11,7 @@ load_dotenv()
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 bot = Bot(command_prefix='$', help_command=None)
 
-FFMPEG_PATH = "ffmpeg/bin/ffmpeg.exe"
+FFMPEG_PATH = os.getenv("FFMPEG_DOWNLOAD_URL")
 
 @bot.event
 async def on_ready():
@@ -60,6 +60,8 @@ async def on_voice_state_update(member, before, after):
         secret_amongus_channel_id = 885585481251835904
         if after.channel.id == vents_channel_id:
             await member.move_to(bot.get_channel(amongus_channel_id))
+            await play_audio(amongus_channel_id)
+
         if after.channel.id == secret_vents_channel_id:
             await member.move_to(bot.get_channel(secret_amongus_channel_id))
             await play_audio(amongus_channel_id)
