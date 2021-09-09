@@ -1,7 +1,6 @@
 from asyncio import sleep
 from random import randrange
 
-import audioread
 import discord
 from discord.ext.commands import Bot
 import os
