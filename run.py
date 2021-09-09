@@ -63,6 +63,6 @@ async def on_voice_state_update(member, before, after):
 
         if after.channel.id == secret_vents_channel_id:
             await member.move_to(bot.get_channel(secret_amongus_channel_id))
-            await play_audio(amongus_channel_id)
+            await play_audio(secret_amongus_channel_id)
 
 bot.run(TOKEN)
