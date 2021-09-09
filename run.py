@@ -35,10 +35,15 @@ async def help(ctx):
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    if (before.channel != 'Vent' and after.channel is not None):
+    if ((before.channel != 'Vent' or before.channel != 'Secret Vent') and after.channel is not None):
         vents_channel_id = 879964430710997023
+        secret_vents_channel_id = 885585693852717126
         amongus_channel_id = 757120076519440444
+        secret_amongus_channel_id = 885585481251835904
         if after.channel.id == vents_channel_id:
             await member.move_to(bot.get_channel(amongus_channel_id))
+        if after.channel.id == secret_vents_channel_id:
+              await member.move_to(bot.get_channel(secret_amongus_channel_id))
+
 
 bot.run(TOKEN)
