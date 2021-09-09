@@ -1,4 +1,5 @@
 from asyncio import sleep
+from random import randrange
 
 import audioread
 import discord
@@ -10,7 +11,7 @@ load_dotenv()
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 bot = Bot(command_prefix='$', help_command=None)
 
-FFMPEG_PATH = "ffmpeg-20200831-4a11a6f-win64-static/bin/ffmpeg.exe"
+FFMPEG_PATH = "ffmpeg/bin/ffmpeg.exe"
 
 @bot.event
 async def on_ready():
@@ -39,15 +40,15 @@ async def help(ctx):
     await ctx.send(embed=embed)
 
 async def play_audio(channel_id):
+    paths = ["sfx/theme.mp3", "sfx/run.mp3", "sfx/meeting.mp3", \
+             "sfx/vote.mp3", "sfx/kill.mp3"]
     currUserVC = bot.get_channel(channel_id)
-    audioPath = "sfx/theme.mp3"
+    audioPath = paths[randrange(5)]
 
     vc = await currUserVC.connect()
     await sleep(.5)
     vc.play(discord.FFmpegPCMAudio(executable=FFMPEG_PATH, source=audioPath))
-    with audioread.audio_open(audioPath) as f:
-        # Start Playing
-        await sleep(f.duration)
+    await sleep(5)
     await vc.disconnect()
 
 @bot.event
@@ -59,10 +60,8 @@ async def on_voice_state_update(member, before, after):
         secret_amongus_channel_id = 885585481251835904
         if after.channel.id == vents_channel_id:
             await member.move_to(bot.get_channel(amongus_channel_id))
-            await play_audio(amongus_channel_id)
         if after.channel.id == secret_vents_channel_id:
             await member.move_to(bot.get_channel(secret_amongus_channel_id))
             await play_audio(amongus_channel_id)
-
 
 bot.run(TOKEN)
