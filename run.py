@@ -3,6 +3,7 @@ from random import randrange
 
 # import audioread
 import discord
+from discord.ext import commands
 from discord.ext.commands import Bot
 import os
 from dotenv import load_dotenv
@@ -38,6 +39,25 @@ async def help(ctx):
     embed = discord.Embed(title="when impostor is sus", description=art,
                         color=0x800080)
     await ctx.send(embed=embed)
+
+async def play_theme(channel_id):
+    currUserVC = bot.get_channel(channel_id)
+    audioPath = "sfx/theme.mp3"
+
+    vc = await currUserVC.connect()
+    await sleep(.5)
+    vc.play(discord.FFmpegPCMAudio(executable=FFMPEG_PATH, source=audioPath))
+    await sleep(5)
+    await vc.disconnect()
+
+@bot.command()
+@commands.has_role('amogny')
+async def amogus(ctx, channel_id):
+    await play_theme(int(channel_id))
+@amogus.error
+async def amogus_handler(ctx, error):
+    if isinstance(error, commands.CommandInvokeError):
+        await ctx.send("Input a Voice Channel ID")
 
 async def play_audio(channel_id):
     paths = ["sfx/theme.mp3", "sfx/run.mp3", "sfx/meeting.mp3", \
