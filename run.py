@@ -58,10 +58,14 @@ async def on_voice_state_update(member, before, after):
         secret_vents_channel_id = 885585693852717126
         amongus_channel_id = 757120076519440444
         secret_amongus_channel_id = 885585481251835904
+        vent_log_channel_id = 885909617685712966
+
         if after.channel.id == vents_channel_id:
+            await bot.get_channel(vent_log_channel_id).send(str(member) + " vented!")
             await member.move_to(bot.get_channel(amongus_channel_id))
 
         if after.channel.id == secret_vents_channel_id:
+            await bot.get_channel(vent_log_channel_id).send(str(member) + " secretly vented!")
             await member.move_to(bot.get_channel(secret_amongus_channel_id))
             await play_audio(secret_amongus_channel_id)
 
