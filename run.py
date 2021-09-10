@@ -52,12 +52,17 @@ async def play_theme(channel_id):
 
 @bot.command()
 @commands.has_role('amogny')
-async def amogus(ctx, channel_id):
-    await play_theme(int(channel_id))
+async def amogus(ctx, channel_name):
+    channel_id = 0
+    for channel in bot.get_all_channels():
+        if channel.name == channel_name:
+            channel_id = channel.id
+    await play_theme(channel_id)
+
 @amogus.error
 async def amogus_handler(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
-        await ctx.send("Input a Voice Channel ID")
+        await ctx.send("Insert a valid voice channel!")
 
 async def play_audio(channel_id):
     paths = ["sfx/theme.mp3", "sfx/run.mp3", "sfx/meeting.mp3", \
