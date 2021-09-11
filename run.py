@@ -48,6 +48,7 @@ async def play_theme(channel_id):
     await sleep(.5)
     vc.play(discord.FFmpegPCMAudio(executable=FFMPEG_PATH, source=audioPath))
     await sleep(5)
+
     await vc.disconnect()
 
 @bot.command()
@@ -57,6 +58,7 @@ async def amogus(ctx, channel_name):
     for channel in bot.get_all_channels():
         if channel.name == channel_name:
             channel_id = channel.id
+
     await play_theme(channel_id)
 
 @amogus.error
@@ -64,7 +66,7 @@ async def amogus_handler(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
         await ctx.send("Insert a valid voice channel!")
 
-async def play_audio(channel_id):
+async def play_audio(channel_id, alreadyInVC):
     paths = ["sfx/theme.mp3", "sfx/run.mp3", "sfx/meeting.mp3", \
              "sfx/vote.mp3", "sfx/kill.mp3"]
     currUserVC = bot.get_channel(channel_id)
@@ -74,6 +76,7 @@ async def play_audio(channel_id):
     await sleep(.5)
     vc.play(discord.FFmpegPCMAudio(executable=FFMPEG_PATH, source=audioPath))
     await sleep(5)
+
     await vc.disconnect()
 
 @bot.event
@@ -85,6 +88,8 @@ async def on_voice_state_update(member, before, after):
         secret_amongus_channel_id = 885585481251835904
         vent_log_channel_id = 885909617685712966
 
+        alreadyInVC = bot.user in bot.get_channel(secret_amongus_channel_id).members
+
         if after.channel.id == vents_channel_id:
             await bot.get_channel(vent_log_channel_id).send(str(member) + " vented!")
             await member.move_to(bot.get_channel(amongus_channel_id))
@@ -92,6 +97,6 @@ async def on_voice_state_update(member, before, after):
         if after.channel.id == secret_vents_channel_id:
             await bot.get_channel(vent_log_channel_id).send(str(member) + " secretly vented!")
             await member.move_to(bot.get_channel(secret_amongus_channel_id))
-            await play_audio(secret_amongus_channel_id)
+            await play_audio(secret_amongus_channel_id, alreadyInVC)
 
 bot.run(TOKEN)
