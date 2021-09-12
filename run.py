@@ -67,7 +67,7 @@ async def amogus_handler(ctx, error):
         await ctx.send("Insert a valid voice channel!")
 
 async def play_audio(channel_id, alreadyInVC):
-    paths = ["sfx/theme.mp3", "sfx/run.mp3", "sfx/meeting.mp3", \
+    paths = ["sfx/theme.mp3", "sfx/run.mp3",  \
              "sfx/vote.mp3", "sfx/kill.mp3"]
     currUserVC = bot.get_channel(channel_id)
     audioPath = paths[randrange(5)]
